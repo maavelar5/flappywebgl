@@ -14,9 +14,9 @@ app.set('view engine', 'handlebars');
 app.set('views', './views');
 
 app.get('/', (req, res) => {
-    const fsSource = fs.readFileSync('fragment.glsl').toString()
-    const vsSource = fs.readFileSync('vertex.glsl').toString()
-    const baseJs = fs.readFileSync('main.js').toString()
+    const fsSource = fs.readFileSync('./fragment.glsl').toString()
+    const vsSource = fs.readFileSync('./vertex.glsl').toString()
+    const baseJs = fs.readFileSync('./main.js').toString()
 
     res.render('home', {vsSource, fsSource, baseJs})
 })
