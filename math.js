@@ -7,6 +7,10 @@ const Vec2 = {
         return {x: a.x + b.x, y: a.y + b.y}
     },
 
+    sub: function (a, b) {
+        return {x: a.x - b.x, y: a.y - b.y}
+    },
+
     mul: function (a, scalar) {
         return {x: a.x * scalar, y: a.y * scalar}
     }
