@@ -1,4 +1,5 @@
 let won = 0;
+const fps_tag = document.getElementById('fps')
 const won_tag = document.getElementById('won')
 const canvas = document.querySelector('#glcanvas');
 const gl = canvas.getContext('webgl2');
@@ -6,7 +7,7 @@ const gl = canvas.getContext('webgl2');
 const W = 640;
 const H = 480;
 
-const gravity = Vec2.new(0, 100)
+const gravity = Vec2.new(0, 800)
 
 if (!gl) throw new Error('Unable to initialize WebGL.');
 
@@ -172,7 +173,7 @@ function collision () {
 
         if (a.x < b.w && a.w > b.x && a.y < b.h && a.h > b.y)
         {
-            alert('Yu Lews')
+            //alert('Yu Lews')
             bird = init_game();
 
             break;
@@ -211,7 +212,7 @@ function init_game () {
 
             bird.prev = {x: bird.pos.x, y: bird.pos.y};
 
-            bird.pos.x += 50.0 * time_data.step;
+            bird.pos.x += 200.0 * time_data.step;
             bird.vel.y += gravity.y * time_data.step
             bird.pos.y += bird.vel.y * time_data.step;
 
@@ -241,9 +242,9 @@ function get_model (body) {
 
 const bindings = {
     ' ': function () {
-        bird.vel.y -= 150;
+        bird.vel.y -= 600;
 
-        if (bird.vel.y < -100) bird.vel.y = -100;
+        if (bird.vel.y < -220) bird.vel.y = -220;
     },
 }
 
@@ -262,6 +263,13 @@ document.addEventListener('keydown', (event) => {
 
 }, false);
 
+document.addEventListener('touchstart', (event) => {
+    event.preventDefault()
+
+    bindings[' ']()
+}, false);
+
+
 function draw_object (model, color) {
     gl.uniform4fv(shader.uniforms.color, color);
 
@@ -274,7 +282,7 @@ function draw_object (model, color) {
 }
 
 function draw_scene() {
-    bird.move();
+    update_time_data(time_data, performance.now())
 
     gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clear(gl.COLOR_BUFFER_BIT);
@@ -302,7 +310,8 @@ function draw_scene() {
         draw_object(get_model(object), [1, 0, 0, 1])
     })
 
-    update_time_data(time_data, performance.now())
+
+    fps_tag.innerHTML = time_data.fps.toString().split('.')[0]
 
     window.requestAnimationFrame(draw_scene)
 }
