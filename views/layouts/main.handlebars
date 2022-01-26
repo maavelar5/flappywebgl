@@ -1,21 +1,20 @@
-<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>WebGL Demo</title>
-        <link rel="stylesheet" href="./main.css" type="text/css">
-    </head>
+  <head>
+    <meta charset="utf-8" />
+    <title>WebGL Demo</title>
+    <link rel="stylesheet" href="/main.css" type="text/css" />
+  </head>
 
-    {{{body}}}
+  {{{body}}}
 
-    <body>
-        <canvas id="glcanvas" width="640" height="480"></canvas>
+  <body>
+    <div id="viewContainer">
+      <canvas id="canvas"></canvas>
+    </div>
 
-        <script src="math.js"></script>
-        <script>
-         const vs_src = `{{{vsSource}}}`
-         const fs_src = `{{{fsSource}}}`
-         {{{baseJs}}}
-        </script>
-    </body>
+    <script>
+      const vs_src = `{{{vsSource}}}`; const fs_src = `{{{fsSource}}}`;
+      {{{baseJs}}}
+    </script>
+  </body>
 </html>
