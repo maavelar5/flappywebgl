@@ -124,6 +124,53 @@ class Mat4 extends Array {
   }
 }
 
+class Node {
+  constructor(data, left = null, right = null) {
+    this.left = left;
+    this.right = right;
+    this.data = data;
+  }
+}
+
+class Tree {
+  constructor(data) {
+    this.root = new Node(data);
+  }
+
+  push(data, node = this.root) {
+    if (data < node.data) {
+      if (node.left) this.push(data, node.left);
+      else node.left = new Node(data);
+    } else if (data > node.data) {
+      if (node.right) this.push(data, node.right);
+      else node.right = new Node(data);
+    }
+  }
+
+  print(node = this.root) {
+    if (node.left) {
+      this.print(node.left);
+    }
+
+    if (node.right) {
+      this.print(node.right);
+    }
+
+    console.log(node.data);
+  }
+}
+
+const tree = new Tree(1);
+
+tree.push(2);
+tree.push(3);
+tree.push(4);
+tree.push(5);
+tree.push(0);
+tree.push(10);
+
+tree.print();
+
 function mat4_to_array(matrix) {
   let result = [];
 
@@ -439,6 +486,9 @@ const bindings = {
 
     if (bird.vel.y < -220) bird.vel.y = -220;
   },
+  Escape: function () {
+    bird = init_game();
+  },
 };
 
 function keydown(event) {
@@ -449,10 +499,6 @@ function keydown(event) {
   const key = event.key;
 
   if (bindings[key]) bindings[key]();
-
-  if (key === "Escape") {
-    bird = init_game();
-  }
 }
 
 function touchstart(event) {
