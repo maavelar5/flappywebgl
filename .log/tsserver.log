@@ -5378,3 +5378,21 @@ Info 5374 [16:39:13.513] Different program with same set of files:: structureIsR
 Info 5375 [16:39:13.901] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
 Info 5376 [16:39:13.920] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 871 structureChanged: false Elapsed: 18.87432300299406ms
 Info 5377 [16:39:13.920] Different program with same set of files:: structureIsReused:: 2
+Info 5378 [16:56:04.281] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 5379 [16:56:04.301] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 872 structureChanged: false Elapsed: 20.001926999539137ms
+Info 5380 [16:56:04.301] Different program with same set of files:: structureIsReused:: 2
+Info 5381 [16:56:07.138] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 5382 [16:56:07.153] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 873 structureChanged: false Elapsed: 14.807254001498222ms
+Info 5383 [16:56:07.153] Different program with same set of files:: structureIsReused:: 2
+Info 5384 [16:56:07.770] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 5385 [16:56:07.784] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 874 structureChanged: false Elapsed: 14.251391001045704ms
+Info 5386 [16:56:07.784] Different program with same set of files:: structureIsReused:: 2
+Info 5387 [16:58:19.023] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 5388 [16:58:19.037] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 875 structureChanged: false Elapsed: 14.058579001575708ms
+Info 5389 [16:58:19.037] Different program with same set of files:: structureIsReused:: 2
+Info 5390 [16:58:19.344] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 5391 [16:58:19.362] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 876 structureChanged: false Elapsed: 17.899264000356197ms
+Info 5392 [16:58:19.362] Different program with same set of files:: structureIsReused:: 2
+Info 5393 [16:58:19.683] Starting updateGraphWorker: Project: /dev/null/inferredProject1*
+Info 5394 [16:58:19.699] Finishing updateGraphWorker: Project: /dev/null/inferredProject1* Version: 877 structureChanged: false Elapsed: 15.709715999662876ms
+Info 5395 [16:58:19.699] Different program with same set of files:: structureIsReused:: 2

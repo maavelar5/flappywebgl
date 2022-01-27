@@ -105,10 +105,10 @@ class Mat4 extends Array {
   }
 
   static rotate(matrix, angle) {
-    // {size.x, 0,      0, 0}
-    // {0,      size.y, 0, 0}
-    // {0,      0,      1, 0}
-    // {0,      0,      0, 1}
+    // {cos(angle),    -sin(angle), 0, 0}
+    // {sin(angle),     cos(angle), 0, 0}
+    // {0,              0,          1, 0}
+    // {0,              0,          0, 1}
 
     angle = angle * (3.1415 / 180);
 
@@ -154,11 +154,6 @@ class Texture {
 
     gl.bindTexture(gl.TEXTURE_2D, id);
 
-    // Because images have to be downloaded over the internet
-    // they might take a moment until they are ready.
-    // Until then put a single pixel in the texture so we can
-    // use it immediately. When the image has finished downloading
-    // we'll update the texture with the contents of the image.
     const level = 0;
     const internalFormat = gl.RGBA;
     const width = 1;
@@ -166,7 +161,7 @@ class Texture {
     const border = 0;
     const srcFormat = gl.RGBA;
     const srcType = gl.UNSIGNED_BYTE;
-    const pixel = new Uint8Array([0, 0, 255, 255]); // opaque blue
+    const pixel = new Uint8Array([0, 0, 255, 255]);
 
     gl.texImage2D(
       gl.TEXTURE_2D,
@@ -201,12 +196,8 @@ class Texture {
 
     image.src = url;
 
-    this.image = image;
     this.id = id;
-  }
-
-  static is_power_of_2(value) {
-    return (value & (value - 1)) == 0;
+    this.image = image;
   }
 }
 
@@ -239,7 +230,11 @@ const time_data = {
 const NONE = 0;
 
 class Timer {
-  constructor() {}
+  constructor(config, delay, restart_delay) {
+    this.config = config;
+    this.delay = delay;
+    this.restart_delay = restart_delay;
+  }
 }
 
 class Shader {
@@ -311,17 +306,7 @@ function init_default_shader() {
   gl.uniform1i(shader.uniforms.image, 0);
 
   const positions = [
-    0.0, 1.0,
-
-    1.0, 0.0,
-
-    0.0, 0.0,
-
-    0.0, 1.0,
-
-    1.0, 1.0,
-
-    1.0, 0.0,
+    0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0,
   ];
 
   gl.bindBuffer(gl.ARRAY_BUFFER, shader.buffer);
@@ -382,10 +367,7 @@ function collision() {
     };
 
     if (a.x < b.w && a.w > b.x && a.y < b.h && a.h > b.y) {
-      //alert('Yu Lews')
-      bird = init_game();
-
-      break;
+      return (bird = init_game());
     }
   }
 }
@@ -396,8 +378,8 @@ function init_game() {
   obstacles = obstacles.slice(0, 4);
 
   for (let i = 0; i < 50; i++) {
-    const x = random(100, WS - 50);
-    const y = random(32, H - 32);
+    const x = random(100, WS - 128);
+    const y = random(32, H - 64);
     const w = random(100, 128);
     const h = random(32, 64);
 
@@ -419,7 +401,10 @@ function init_game() {
         return;
       }
 
-      bird.prev = { x: bird.pos.x, y: bird.pos.y };
+      bird.prev = {
+        x: bird.pos.x,
+        y: bird.pos.y,
+      };
 
       bird.pos.x += 200.0 * time_data.step;
       bird.vel.y += gravity.y * time_data.step;
@@ -456,33 +441,28 @@ const bindings = {
   },
 };
 
-document.addEventListener(
-  "keydown",
-  (event) => {
-    if (event.repeat == 1) return;
+function keydown(event) {
+  if (event.repeat == 1) return;
 
-    event.preventDefault();
+  event.preventDefault();
 
-    const key = event.key;
+  const key = event.key;
 
-    if (bindings[key]) bindings[key]();
+  if (bindings[key]) bindings[key]();
 
-    if (key === "Escape") {
-      bird = init_game();
-    }
-  },
-  false
-);
+  if (key === "Escape") {
+    bird = init_game();
+  }
+}
 
-document.addEventListener(
-  "touchstart",
-  (event) => {
-    event.preventDefault();
+function touchstart(event) {
+  event.preventDefault();
 
-    bindings[" "]();
-  },
-  false
-);
+  bindings[" "]();
+}
+
+document.addEventListener("keydown", keydown, false);
+document.addEventListener("touchstart", touchstart, false);
 
 function draw_object(model, color, sprite) {
   gl.uniform4fv(shader.uniforms.color, color);

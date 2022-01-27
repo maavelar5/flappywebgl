@@ -1,20 +1,23 @@
 html {
   box-sizing: border-box;
-  height: 100%;
 }
 
 body {
     margin: 0;
-    height: 100%;
 }
 
 #canvas {
     width: 100%;
-    heigth: 100%;
-    display: block;
 }
 
 #viewContainer {
-    width: 100%;
-    heigth: 100%;
+    width: 85%;
+    float: left;
+}
+
+#pointsContainer {
+    background-color: black;
+    color: white;
+    width: 15%;
+    float: right;
 }
