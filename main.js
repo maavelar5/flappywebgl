@@ -127,9 +127,14 @@ class Mat4 extends Array {
 class Node {
   constructor(data, left = null, right = null) {
     this.left = left;
-    this.right = right;
     this.data = data;
+    this.right = right;
+    this.weight = 0;
   }
+}
+
+function max(i, j) {
+  return i > j ? i : j;
 }
 
 class Tree {
@@ -138,37 +143,110 @@ class Tree {
   }
 
   push(data, node = this.root) {
-    if (data < node.data) {
-      if (node.left) this.push(data, node.left);
-      else node.left = new Node(data);
-    } else if (data > node.data) {
-      if (node.right) this.push(data, node.right);
-      else node.right = new Node(data);
+    if (typeof data == "object") {
+      for (let i = 0; i < data.length; i++) this.push(data[i], node);
+      return;
+    }
+
+    let leaf = data < node.data ? node.left : node.right;
+
+    if (leaf) this.push(data, leaf);
+    else {
+      leaf = new Node(data);
+
+      if (data < node.data) node.left = leaf;
+      else node.right = leaf;
     }
   }
 
   print(node = this.root) {
-    if (node.left) {
-      this.print(node.left);
-    }
-
-    if (node.right) {
-      this.print(node.right);
-    }
+    if (node.left) this.print(node.left);
+    if (node.right) this.print(node.right);
 
     console.log(node.data);
+  }
+
+  height(node = this.root) {
+    if (node == null) return -1;
+
+    let left = this.height(node.left),
+      right = this.height(node.right);
+
+    return left > right ? left + 1 : right + 1;
+  }
+
+  leftLeftRotn(p) {
+    let q = new Node();
+    q = p.left;
+    p.left = q.right;
+    q.right = p;
+
+    p.height = max(this.height(p.left), this.height(p.right)) + 1;
+    q.height = max(this.height(q.left), p.height) + 1;
+
+    return q;
+  }
+
+  rightRightRotn(p) {
+    let q = new Node();
+    q = p.right;
+    p.right = q.left;
+    q.left = p;
+    p.height = max(this.height(p.left), this.height(p.right)) + 1;
+    q.height = max(this.height(q.right), p.height) + 1;
+
+    return q;
+  }
+
+  /*double rotation is performed as LR */
+  leftRightRotn(p) {
+    p.left = this.rightRightRotn(p.left);
+    p = this.leftLeftRotn(p);
+
+    return p;
+  }
+
+  /*double rotation is performed as RL */
+  rightLeftRotn(p) {
+    p.right = this.leftLeftRotn(p.right);
+    p = this.rightRightRotn(p);
+    return p;
+  }
+
+  balance(p = this.root) {
+    let bFactor, hL, hR; /* hL & hR: height of left subtree and right subtree*/
+    let pLeft, pRight; /*pLeft & pRight: left and right subtree of root p */
+
+    if (!p.left) hL = 0;
+    else hL = p.left.height + 1;
+
+    if (!p.right) hR = 0;
+    else hR = p.right.height + 1;
+
+    bFactor = hL - hR;
+
+    if (bFactor < 2 && bFactor > -2) {
+      return p;
+    } else if (bFactor == 2) {
+      pLeft = p.left;
+
+      if (this.height(pLeft.left) > this.height(pLeft.right))
+        return this.leftLeftRotn(p);
+      else return this.leftRightRotn(p);
+    } else {
+      pRight = p.right;
+
+      if (this.height(pRight.right) > this.height(pRight.left))
+        return this.rightRightRotn(p);
+      else return this.rightLeftRotn(p);
+    }
   }
 }
 
 const tree = new Tree(1);
 
-tree.push(2);
-tree.push(3);
-tree.push(4);
-tree.push(5);
-tree.push(0);
-tree.push(10);
-
+tree.push([2, 3, 4, 5, 0, 10]);
+tree.balance();
 tree.print();
 
 function mat4_to_array(matrix) {
